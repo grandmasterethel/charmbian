@@ -84,14 +84,14 @@ echo "Copying kernel..."
 dd if=/dev/sda1 of=$kernelpart
 
 echo "Downloading debootstrap..."
-wget http://ftp.us.debian.org/debian/pool/main/d/debootstrap/debootstrap_1.0.123_all.deb
-ar x debootstrap_1.0.123_all.deb
+wget http://launchpadlibrarian.net/476282185/debootstrap_1.0.118ubuntu1.1_all.deb
+ar x debootstrap_1.0.118ubuntu1.1_all.deb
 tar -xf data.tar.gz
 echo "Starting debootstrap on $rootpart..."
 mkfs.ext4 -F "$rootpart"
 mount $rootpart /mnt
 
-DEBOOTSTRAP_DIR=usr/share/debootstrap usr/sbin/debootstrap --no-check-gpg --components=main,non-free,contrib --arch=armhf --foreign --include=alsa-utils,acpid,xdm,x11-xserver-utils,xserver-common,xserver-xorg,xserver-xorg-core,xserver-xorg-input-all,xserver-xorg-video-fbdev,links,gpicview,pcmanfm,iceweasel,xterm,fluxbox,xdm,xinit,usbutils,kmod,libkmod2,wget,curl,wireless-tools,wpasupplicant,x11-utils,vim,pm-utils stable /mnt
+DEBOOTSTRAP_DIR=usr/share/debootstrap usr/sbin/debootstrap --no-check-gpg --components=main,universe,restricted,multiverse --arch=armhf --foreign --include=alsa-utils,acpid,xdm,x11-xserver-utils,xserver-common,xserver-xorg,xserver-xorg-core,xserver-xorg-input-all,xserver-xorg-video-fbdev,links,gpicview,pcmanfm,iceweasel,xterm,fluxbox,xdm,xinit,usbutils,kmod,libkmod2,wget,curl,wireless-tools,wpasupplicant,x11-utils,vim,pm-utils stable /mnt
 
 echo "Package setup in the chroot..."
 chroot /mnt /bin/sh -c "PATH=/bin:/sbin:/usr/sbin:/usr/local/sbin:$PATH /debootstrap/debootstrap --second-stage"
@@ -108,7 +108,7 @@ echo "depmod in the chroot..."
 chroot /mnt /sbin/depmod
 
 echo "Putting a basic sources.list in place..."
-echo "deb http://http.us.debian.org/debian/ stable main contrib non-free" > /mnt/etc/apt/sources.list
+echo "deb http://gb.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" > /mnt/etc/apt/sources.list
 
 echo "Putting a basic fstab in place..."
 echo "/dev/disk/by-partlabel/Root	/	ext4	noatime	0	0" > /mnt/etc/fstab
