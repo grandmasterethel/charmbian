@@ -1,3 +1,11 @@
+THIS DOES NOT WORK AT THE MOMENT! DO NOT USE THIS SCRIPT!
+
+Based on 5ilver's charmbian script, but modified to install Ubuntu focal instead.
+
+Original readme below
+
+////////////////////////////////////////////////////////////////
+
 charmbian
 
 Debian Buster install script for samsung arm chromebooks. Designed to be run ON the target device from an arch boot stick created from https://archlinuxarm.org/platforms/armv7/samsung/samsung-chromebook-2. Copy charbian.sh to partition 2 when creating the stick, or get it some other way after you've booted into the usb environment. You will need to use CTRL+u at the dev mode screen, and you cannot boot from the blue usb3 port.
