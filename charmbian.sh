@@ -91,7 +91,7 @@ echo "Starting debootstrap on $rootpart..."
 mkfs.ext4 -F "$rootpart"
 mount $rootpart /mnt
 
-DEBOOTSTRAP_DIR=usr/share/debootstrap usr/sbin/debootstrap --no-check-gpg --components=main,universe,restricted,multiverse --arch=armhf --foreign --include=alsa-utils,acpid,xdm,x11-xserver-utils,xserver-common,xserver-xorg,xserver-xorg-core,xserver-xorg-input-all,xserver-xorg-video-fbdev,links,gpicview,pcmanfm,chromium-browser,xterm,fluxbox,xdm,xinit,usbutils,kmod,libkmod2,wget,curl,wireless-tools,wpasupplicant,x11-utils,vim,pm-utils focal /mnt
+DEBOOTSTRAP_DIR=usr/share/debootstrap usr/sbin/debootstrap --no-check-gpg --components=main,universe,restricted,multiverse --arch=armhf --foreign --include=alsa-utils,acpid,xdm,x11-xserver-utils,xserver-common,xserver-xorg,xserver-xorg-core,xserver-xorg-input-all,xserver-xorg-video-fbdev,links,gpicview,pcmanfm,xterm,fluxbox,xdm,xinit,usbutils,kmod,libkmod2,wget,curl,wireless-tools,wpasupplicant,x11-utils,vim,pm-utils focal /mnt
 
 echo "Package setup in the chroot..."
 chroot /mnt /bin/sh -c "PATH=/bin:/sbin:/usr/sbin:/usr/local/sbin:$PATH /debootstrap/debootstrap --second-stage"
