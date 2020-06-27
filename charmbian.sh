@@ -82,8 +82,9 @@ rootpart="$devname""$needp""2"
 read -p "PRESS ENTER TO CONTINUE"
 
 echo "Copying kernel..."
-#cheating and assuming we are on /dev/sda
-dd if=/dev/sda1 of=$kernelpart
+#cheating and assuming we are on /dev/sda NOOOPPPE - assuming /dev/mmcblk1
+#dd if=/dev/sda1 of=$kernelpart
+dd if=/dev/mmcblk1 of=$kernelpart
 
 read -p "PRESS ENTER TO CONTINUE"
 
