@@ -131,14 +131,12 @@ read -p "PRESS ENTER TO CONTINUE"
 echo "Putting a basic fstab in place..."
 echo "/dev/disk/by-partlabel/Root	/	ext4	noatime	0	0" > /mnt/etc/fstab
 
-read -p "PRESS ENTER TO CONTINUE"
-
-echo "Setting up /etc/network/interfaces.d file for mlan0..."
-echo -e "allow-hotplug mlan0
-auto mlan0
-iface mlan0 inet dhcp
-wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-wpa-driver wext" > /mnt/etc/network/interfaces.d/mlan0
+#echo "Setting up /etc/network/interfaces.d file for mlan0..."
+#echo -e "allow-hotplug mlan0
+#auto mlan0
+#iface mlan0 inet dhcp
+#wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+#wpa-driver wext" > /mnt/etc/network/interfaces.d/mlan0
 
 read -p "PRESS ENTER TO CONTINUE"
 
@@ -223,8 +221,8 @@ echo 'amixer | grep "Speaker\|Headphone" | grep DAC1 | sed "s/Simple mixer contr
 #TODO magic to make brightness and volume keyboard buttons work
 #brightness control feels real smooth with an exponential curve, can that be done in a proper manner?
 
-echo "Basic wpa_supplicant config setup..."
-echo "ctrl_interface=/var/run/wpa_supplicant" > /mnt/etc/wpa_supplicant/wpa_supplicant.conf
+#echo "Basic wpa_supplicant config setup..."
+#echo "ctrl_interface=/var/run/wpa_supplicant" > /mnt/etc/wpa_supplicant/wpa_supplicant.conf
 
 read -p "PRESS ENTER TO CONTINUE"
 
@@ -236,16 +234,16 @@ read -p "PRESS ENTER TO CONTINUE"
 echo "Lets set a root pw..."
 chroot /mnt /bin/sh -c "passwd root"
 
-echo "Want to set up a WPA1/2 wireless network in /etc/wpa_supplicant/wpa_supplicant.conf?"
-echo "Enter an essid, or nothing to skip"
-echo "(you may need to run wpa_suppliciant -c /etc/wpa_supplicant/wpa_supplicant.conf and"
-echo "dhclient to activate wifi on boot now due to changes in buster"
-read essid
-if [ ! $essid == "" ]; then 
-	echo "Enter passphase (Will echo!)"
-	read passphrase
-	wpa_passphrase $essid $passphrase >> /mnt/etc/wpa_supplicant/wpa_supplicant.conf
-fi
+#echo "Want to set up a WPA1/2 wireless network in /etc/wpa_supplicant/wpa_supplicant.conf?"
+#echo "Enter an essid, or nothing to skip"
+#echo "(you may need to run wpa_suppliciant -c /etc/wpa_supplicant/wpa_supplicant.conf and"
+#echo "dhclient to activate wifi on boot now due to changes in buster"
+#read essid
+#if [ ! $essid == "" ]; then 
+#	echo "Enter passphase (Will echo!)"
+#	read passphrase
+#	wpa_passphrase $essid $passphrase >> /mnt/etc/wpa_supplicant/wpa_supplicant.conf
+#fi
 
 umount /mnt
 
