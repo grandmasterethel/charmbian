@@ -79,14 +79,9 @@ partprobe $devname
 kernelpart="$devname""$needp""1"
 rootpart="$devname""$needp""2"
 
-read -p "PRESS ENTER TO CONTINUE"
-
 echo "Copying kernel..."
-#cheating and assuming we are on /dev/sda NOOOPPPE - assuming /dev/mmcblk1
-#dd if=/dev/sda1 of=$kernelpart
-dd if=/dev/mmcblk1 of=$kernelpart
-
-read -p "PRESS ENTER TO CONTINUE"
+#cheating and assuming we are on /dev/sda
+dd if=/dev/sda1 of=$kernelpart
 
 echo "Downloading debootstrap..."
 wget http://launchpadlibrarian.net/476282185/debootstrap_1.0.118ubuntu1.1_all.deb
@@ -96,38 +91,24 @@ echo "Starting debootstrap on $rootpart..."
 mkfs.ext4 -F "$rootpart"
 mount $rootpart /mnt
 
-read -p "PRESS ENTER TO CONTINUE"
-
 DEBOOTSTRAP_DIR=usr/share/debootstrap usr/sbin/debootstrap --no-check-gpg --components=main,universe,restricted,multiverse --arch=armhf --foreign --include=alsa-utils,acpid,xdm,x11-xserver-utils,xserver-common,xserver-xorg,xserver-xorg-core,xserver-xorg-input-all,xserver-xorg-video-fbdev,links,gpicview,pcmanfm,xterm,fluxbox,xdm,xinit,usbutils,kmod,libkmod2,wget,curl,wireless-tools,wpasupplicant,x11-utils,vim,pm-utils focal /mnt
-
-read -p "PRESS ENTER TO CONTINUE"
 
 echo "Package setup in the chroot..."
 chroot /mnt /bin/sh -c "PATH=/bin:/sbin:/usr/sbin:/usr/local/sbin:$PATH /debootstrap/debootstrap --second-stage"
-
-read -p "PRESS ENTER TO CONTINUE"
 
 echo "Copying over arch kernel modules..."
 cp -R /lib/modules /mnt/lib/
 echo "Copying over arch firmware..."
 cp -R /lib/firmware /mnt/lib/
 
-read -p "PRESS ENTER TO CONTINUE"
-
 echo "Extracting arch modules for ubuntu..."
 for compressedmodule in $(find /mnt/lib/modules | egrep ^*.ko.gz); do gunzip -v $compressedmodule; done
-
-read -p "PRESS ENTER TO CONTINUE"
 
 echo "depmod in the chroot..."
 chroot /mnt /sbin/depmod
 
-read -p "PRESS ENTER TO CONTINUE"
-
 echo "Putting a basic sources.list in place..."
 echo "deb http://gb.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" > /mnt/etc/apt/sources.list
-
-read -p "PRESS ENTER TO CONTINUE"
 
 echo "Putting a basic fstab in place..."
 echo "/dev/disk/by-partlabel/Root	/	ext4	noatime	0	0" > /mnt/etc/fstab
@@ -138,8 +119,6 @@ echo "/dev/disk/by-partlabel/Root	/	ext4	noatime	0	0" > /mnt/etc/fstab
 #iface mlan0 inet dhcp
 #wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 #wpa-driver wext" > /mnt/etc/network/interfaces.d/mlan0
-
-read -p "PRESS ENTER TO CONTINUE"
 
 echo "Putting a nice trackpad config in place..."
 echo -e 'Section "InputClass"
@@ -162,14 +141,10 @@ Option "ClickFinger3" "2"
 Option "ClickPad" "1"
 EndSection' > /mnt/usr/share/X11/xorg.conf.d/50-synaptics.conf  
 
-read -p "PRESS ENTER TO CONTINUE"
-
 echo -e 'Section "Monitor"
     Identifier "LVDS0"
     Option "DPMS" "false"
 EndSection
-
-read -p "PRESS ENTER TO CONTINUE"
 
 Section "ServerLayout"
     Identifier "ServerLayout0"
@@ -177,8 +152,6 @@ Section "ServerLayout"
     Option "SuspendTime" "0"
     Option "OffTime" "0"
 EndSection' > /mnt/usr/share/X11/xorg.conf.d/10-monitor.conf
-
-read -p "PRESS ENTER TO CONTINUE"
 
 #I don't actually know which of these works but I needed them on a snow...
 echo -e '#!/bin/sh
@@ -210,8 +183,6 @@ action=/etc/acpi/lid.sh %e' > /mnt/etc/acpi/events/lidbtn
 chmod +x /mnt/etc/acpi/lid.sh
 chmod +x /mnt/etc/acpi/events/lidbtn
 
-read -p "PRESS ENTER TO CONTINUE"
-
 #TODO Add some sound hacks here
 #Can we make an alsa device that controls Headphones and Speaker volume level?
 #Can we add auto output switching?
@@ -225,12 +196,8 @@ echo 'amixer | grep "Speaker\|Headphone" | grep DAC1 | sed "s/Simple mixer contr
 #echo "Basic wpa_supplicant config setup..."
 #echo "ctrl_interface=/var/run/wpa_supplicant" > /mnt/etc/wpa_supplicant/wpa_supplicant.conf
 
-read -p "PRESS ENTER TO CONTINUE"
-
 echo "Cleaning up a few packages that break things..."
 chroot /mnt /bin/bash -c "PATH=/usr/sbin:/usr/local/sbin:/sbin:/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/core_perl /usr/bin/dpkg -r xserver-xorg-video-all xserver-xorg-video-modesetting"
-
-read -p "PRESS ENTER TO CONTINUE"
 
 echo "Lets set a root pw..."
 chroot /mnt /bin/sh -c "passwd root"
