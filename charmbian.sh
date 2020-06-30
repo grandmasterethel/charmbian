@@ -109,8 +109,6 @@ chroot /mnt /sbin/depmod
 
 echo "Putting a basic sources.list in place..."
 #echo "deb http://gb.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" > /mnt/etc/apt/sources.list
-echo "http://ppa.launchpad.net/hugegreenbug/cmt2/ubuntu focal Release" | tee -a /mnt/etc/apt/sources.list
-echo "http://ppa.launchpad.net/hugegreenbug/cmt2/ubuntu focal InRelease" | tee -a /mnt/etc/apt/sources.list
 
 echo "Putting a basic fstab in place..."
 echo "/dev/disk/by-partlabel/Root	/	ext4	noatime	0	0" > /mnt/etc/fstab
