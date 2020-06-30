@@ -91,7 +91,7 @@ echo "Starting debootstrap on $rootpart..."
 mkfs.ext4 -F "$rootpart"
 mount $rootpart /mnt
 
-DEBOOTSTRAP_DIR=usr/share/debootstrap usr/sbin/debootstrap --no-check-gpg --components=main,universe,restricted,multiverse --arch=armhf --foreign --include=alsa-utils,acpid,x11-xserver-utils,xserver-common,xserver-xorg,xserver-xorg-core,xserver-xorg-input-all,xserver-xorg-video-fbdev,links,gpicview,pcmanfm,xterm,xinit,usbutils,kmod,libkmod2,wget,curl,network-manager,x11-utils,vim,pm-utils,mesa-utils,nano,tasksel,sudo,alsa-firmware,alsa-lib focal /mnt
+DEBOOTSTRAP_DIR=usr/share/debootstrap usr/sbin/debootstrap --no-check-gpg --components=main,universe,restricted,multiverse --arch=armhf --foreign --include=alsa-utils,acpid,x11-xserver-utils,xserver-common,xserver-xorg,xserver-xorg-core,xserver-xorg-input-all,xserver-xorg-video-fbdev,links,gpicview,pcmanfm,xterm,xinit,usbutils,kmod,libkmod2,wget,curl,network-manager,x11-utils,vim,pm-utils,mesa-utils,nano,tasksel,sudo focal /mnt
 
 echo "Package setup in the chroot..."
 chroot /mnt /bin/sh -c "PATH=/bin:/sbin:/usr/sbin:/usr/local/sbin:$PATH /debootstrap/debootstrap --second-stage"
@@ -108,7 +108,9 @@ echo "depmod in the chroot..."
 chroot /mnt /sbin/depmod
 
 echo "Putting a basic sources.list in place..."
-echo "deb http://gb.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" > /mnt/etc/apt/sources.list
+#echo "deb http://gb.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" > /mnt/etc/apt/sources.list
+echo "http://ppa.launchpad.net/hugegreenbug/cmt2/ubuntu focal Release" | tee -a /mnt/etc/apt/sources.list
+echo "http://ppa.launchpad.net/hugegreenbug/cmt2/ubuntu focal InRelease" | tee -a /mnt/etc/apt/sources.list
 
 echo "Putting a basic fstab in place..."
 echo "/dev/disk/by-partlabel/Root	/	ext4	noatime	0	0" > /mnt/etc/fstab
@@ -120,26 +122,26 @@ echo "/dev/disk/by-partlabel/Root	/	ext4	noatime	0	0" > /mnt/etc/fstab
 #wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 #wpa-driver wext" > /mnt/etc/network/interfaces.d/mlan0
 
-echo "Putting a nice trackpad config in place..."
-echo -e 'Section "InputClass"
-Identifier "touchpad catchall"
-Driver "synaptics"
-MatchIsTouchpad "on"
-MatchDevicePath "/dev/input/event*"
-Option "FingerLow" "5"
-Option "FingerHigh" "5"
-Option "VertEdgeScroll" "0"
-Option "HorizEdgeScroll" "0"
-Option "VertTwoFingerScroll" "1"
-Option "HorizTwoFingerScroll" "1"
-Option "TapButton1" "1"
-Option "TapButton2" "2"
-Option "TapButton3" "3"
-Option "ClickFinger1" "1"
-Option "ClickFinger2" "3"
-Option "ClickFinger3" "2"
-Option "ClickPad" "1"
-EndSection' > /mnt/usr/share/X11/xorg.conf.d/50-synaptics.conf  
+#echo "Putting a nice trackpad config in place..."
+#echo -e 'Section "InputClass"
+#Identifier "touchpad catchall"
+#Driver "synaptics"
+#MatchIsTouchpad "on"
+#MatchDevicePath "/dev/input/event*"
+#Option "FingerLow" "5"
+#Option "FingerHigh" "5"
+#Option "VertEdgeScroll" "0"
+#Option "HorizEdgeScroll" "0"
+#Option "VertTwoFingerScroll" "1"
+#Option "HorizTwoFingerScroll" "1"
+#Option "TapButton1" "1"
+#Option "TapButton2" "2"
+#Option "TapButton3" "3"
+#Option "ClickFinger1" "1"
+#Option "ClickFinger2" "3"
+#Option "ClickFinger3" "2"
+#Option "ClickPad" "1"
+#EndSection' > /mnt/usr/share/X11/xorg.conf.d/50-synaptics.conf  
 
 echo -e 'Section "Monitor"
     Identifier "LVDS0"
