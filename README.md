@@ -3,20 +3,20 @@ Based on 5ilver's charmbian script, but modified to install Ubuntu focal instead
 For best results, use tasksel to install mate desktop.
 
 What works:
--WiFi configured using nmcli
--Touchpad
--Lots of other stuff
+* WiFi configured using nmcli
+* Touchpad
+* Lots of other stuff
 
 What doesn't work:
--Sound
--Probably a bunch of other stuff I haven't investigated
--Brightness control on keyboard hotkeys (it works with the slider in the GUI)
+* Sound
+* Probably a bunch of other stuff I haven't investigated
+* Brightness control on keyboard hotkeys (it works with the slider in the GUI)
 
 to do: 
--Choice to install Ubuntu with Mate or Debian with Fluxbox
--Incorporate archbk script to automate install from ChromeOS -> Arch USB -> Ubuntu/Debian on internal storage including set up user account
--Get sound working (maybe using alsa dotfiles from ChromeOS itself)
--Try to incorporate the GalliumOS Touchpad driver
+* Choice to install Ubuntu with Mate or Debian with Fluxbox
+* Incorporate archbk script to automate install from ChromeOS -> Arch USB -> Ubuntu/Debian on internal storage including set up user account
+* Get sound working (maybe using alsa dotfiles from ChromeOS itself)
+* Try to incorporate the GalliumOS Touchpad driver
 
 
 FEEL FREE TO USE THIS FOR WHATEVER YOU LIKE. LET ME KNOW IF YOU KNOW HOW TO FIX SOUND.
