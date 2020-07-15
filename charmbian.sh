@@ -107,7 +107,7 @@ for compressedmodule in $(find /mnt/lib/modules | egrep ^*.ko.gz); do gunzip -v 
 echo "depmod in the chroot..."
 chroot /mnt /sbin/depmod
 
-echo "Putting a basic sources.list in place..."
+#echo "Putting a basic sources.list in place..." NOT NECESSARY IN UBUNTU - ADDED BY DEFAULT
 #echo "deb http://gb.archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse" > /mnt/etc/apt/sources.list
 
 echo "Putting a basic fstab in place..."
