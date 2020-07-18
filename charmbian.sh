@@ -4,6 +4,96 @@
 # Chrome device ARM Debian installer 
 #
 #
+		helper_script(){
+			echo '#!/usr/bin/env bash
+			    pass_ver () {
+			      while [ true ]; 
+			      do
+				echo
+				echo "enter new password for $1"
+				echo
+				passwd $1 
+				if [ $? -eq 0 ]; then 	
+				  break	
+				fi
+			      done
+			    }
+			    if [ "$(whoami)" != "root" ]; then
+			      echo "this script must be run as root"
+			      echo
+			      exit 1
+			    fi
+			    pass_ver root
+			    echo
+			    read -p "enter a username for your user: " username 
+			    useradd -m -G sudo -s $username /bin/bash
+			    pass_ver $username
+			    echo "Set a password for this user"
+			    passwd $username
+			    while [ ! $connected_to_internet ];
+			    do
+			    nmcli r wifi on 
+			    nmcli d wifi list
+			      echo "Please enter WiFi SSID"
+			      #read -p "is your ssid hidden? [y/N]: " hidden_ssid
+			      #if [ $hidden_ssid = "y" 2> /dev/null ]; then 
+				echo
+				read -p "enter SSID: " a
+				ssid=$a
+				read -sp "enter password: " b
+				wpa=$b
+				nmcli d wifi connect $ssid password $wpa
+				#echo
+				#passwd="$(wpa_passphrase $ssid $a | grep -e "[ ]*psk" | tail -n1 | sed "s/[^0-9]*//")"
+				#cat /etc/netctl/examples/wireless-wpa | sed "s/wlan/mlan/g" | sed "s/#P/P/" | sed "s/#H/H/" | sed "s/MyNetwork/$ssid/" | sed "s/WirelessKey/$passwd/" > /etc/netctl/network
+				#netctl enable network && netctl start network
+			      #else
+				#echo
+				#wifi-menu -o
+			      fi
+			      root_dev="$(lsblk 2> /dev/null | grep "[/]$" | sed "s/[0-9a-z]*//" | sed "s/[^0-9a-z]*[ ].*//" | sed "s/[^0-9a-z]*//g" | sed "s/[p].*//")"
+			      c="$(ping -c 1 google.com 2>/dev/null | head -1 | sed "s/[ ].*//")"
+			      if [ $c ]; then
+				echo
+				echo "you are now connected to the internet"
+				echo
+				#echo "adding $username to sudoers"
+				#echo
+				#pacman -S sudo --noconfirm
+				#sed -i "80i $username ALL=(ALL) ALL" /etc/sudoers
+				connected_to_internet=true
+			      #else
+				#if [ $hidden_ssid = "y" 2> /dev/null ]; then 
+				  #netctl disable network 
+				  #rm /etc/netctl/network
+				#fi
+				#echo
+				#echo "ssid and / or passphrase are invalid."
+			      fi
+			    done
+			    #if [ $root_dev != "mmcblk0" ]; then
+			      #echo
+			      #read -p "install Arch Linux ARM to internal flash memory? [y/N]: " a
+			      #if [ $a = "y" 2> /dev/mull ]; then 
+				#echo
+				#pacman -S cgpt wget --noconfirm ' > helper
+
+				#echo "		sh $SCRIPTNAME mmcblk0" >> helper
+
+				#echo '		
+			      #fi
+			    #else
+			      #echo
+			      #pacman -S vboot-utils
+			      #crossystem dev_boot_usb=1 dev_boot_signed_only=0
+			    #fi
+			    echo "Installing Mate Desktop"
+			    tasksel install ubuntu-mate-desktop
+			    echo
+			    read -p "the system will now reboot. login as your newly created user to continue" a
+			    sed -i "s/sh helper.sh//" .bashrc
+			    reboot' >> helper
+			  }
 
 # follow instructions at https://archlinuxarm.org/platforms/armv7/samsung/samsung-chromebook-2 or appropriate to make a usb stick that will boot arch, then copy this script to partition 2 and run it from the live usb stick on the target machine
 # 2020 - This is hackerware. Do what you like with it as long as you learn something.
@@ -212,6 +302,10 @@ chroot /mnt /bin/sh -c "passwd root"
 #	read passphrase
 #	wpa_passphrase $essid $passphrase >> /mnt/etc/wpa_supplicant/wpa_supplicant.conf
 #fi
+
+  helper_script
+  mv helper root/root/helper.sh
+  echo 'sh helper.sh' >> root/root/.bashrc
 
 umount /mnt
 
