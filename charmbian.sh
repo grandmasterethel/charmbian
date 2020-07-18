@@ -4,7 +4,8 @@
 # Chrome device ARM Debian installer 
 #
 #
-		helper_script(){
+install_charmbian(){
+			helper_script(){
 			echo '#!/usr/bin/env bash
 			    pass_ver () {
 			      while [ true ]; 
@@ -310,3 +311,4 @@ chroot /mnt /bin/sh -c "passwd root"
 umount /mnt
 
 echo "Ok, reboot and have fun!"
+}
